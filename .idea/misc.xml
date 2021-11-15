@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../.gradle/caches/transforms-3/bda13067f55fea338a93a4871d34b35c/transformed/core-1.3.2/res/layout/custom_dialog.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/drawable-v24/card_border_purple.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.21354166666666666" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21354166666666666" />
+        <entry key="app/src/main/res/drawable/card_border.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/float_add.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/layout/activity_assignments.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/activity_create_class.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/activity_join_class.xml" value="0.33958333333333335" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.27309782608695654" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/class_student.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/class_student_layout.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/class_teacher.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/class_teacher_layout.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/dialog_create_class.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/dialog_join_class.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/fragment_assignment.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/fragment_people.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/fragment_student.xml" value="0.33958333333333335" />
+        <entry key="app/src/main/res/layout/fragment_teacher.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/layout_assignment.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/layout_class_student.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/layout_class_teacher.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/layout_people.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/splash_screen.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/menu/menu_popup.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/menu/menu_teacher.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/menu/popup_menu.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.21354166666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/notification_icon.xml" value="0.21354166666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/notification_icon_round.xml" value="0.21354166666666666" />
+        <entry key="app/src/main/res/xml/anim.xml" value="0.27309782608695654" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
