@@ -10,7 +10,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.classtask.NodeNames
 import com.example.classtask.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class TeacherFragment : Fragment() {
 
@@ -19,6 +25,10 @@ class TeacherFragment : Fragment() {
     private lateinit var emptyListTextView: TextView
     private lateinit var teacherClassModelList: ArrayList<TeacherClassModel>
     private lateinit var thisContext: Context
+    private var firebaseAuth = FirebaseAuth.getInstance()
+    private var firebaseUser = firebaseAuth.currentUser
+    private var rootReference = FirebaseDatabase.getInstance().reference
+    private val userID: String = firebaseUser?.uid.toString()
 //    private val progressBar: View? = null
 
     override fun onCreateView(
@@ -46,25 +56,29 @@ class TeacherFragment : Fragment() {
 
         emptyListTextView.visibility = View.VISIBLE
 
-        //take data from mainActivity and add to list
-        val bundle = arguments
-        val subjectValue = bundle!!.getString("subject")
-        val sectionValue = bundle!!.getString("section")
-        Log.i("entered","hurrah!")
 
-        teacherClassModelList.add(TeacherClassModel("DSA","7th sem",14))
-        teacherClassModelList.add(TeacherClassModel("Algo","7th sem",50))
+        val teacherListRef = rootReference.child(NodeNames.TEACHER).child(userID)
+        teacherListRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                teacherClassModelList.clear()
+                teacherAdapter!!.notifyDataSetChanged()
 
-        if(subjectValue!="" && sectionValue!="") {
+                for(snaps in snapshot.children) {
+                    val uniqueDBId = snaps.key.toString()
 
-            teacherClassModelList.add(
-                TeacherClassModel(
-                    subjectValue.toString(),
-                    sectionValue.toString(),
-                    0
-                )
-            )
-        }
-        if (teacherClassModelList.isNotEmpty()) emptyListTextView.visibility = View.GONE
+                    val thisSubject = snaps.child(NodeNames.SUBJECT).value.toString()
+                    val thisSection = snaps.child(NodeNames.SECTION).value.toString()
+                    val thisStudentCount = snaps.child(NodeNames.STUDENT_COUNT).value.toString()
+
+                    teacherClassModelList.add(TeacherClassModel(thisSubject, thisSection, thisStudentCount.toInt(), uniqueDBId, userID))
+                    if (teacherClassModelList.isNotEmpty())
+                        emptyListTextView.visibility = View.GONE
+                    teacherAdapter!!.notifyDataSetChanged()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 }

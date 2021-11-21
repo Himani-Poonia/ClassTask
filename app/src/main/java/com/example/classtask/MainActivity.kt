@@ -24,13 +24,24 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import android.widget.EditText
 import android.widget.Toast
 
+import com.google.android.gms.tasks.OnCompleteListener
 
+import com.google.firebase.database.FirebaseDatabase
+
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var currentUserName: String
     private lateinit var currentUserEmail: String
+    private var firebaseAuth = FirebaseAuth.getInstance()
+    private var firebaseUser = firebaseAuth.currentUser
+    private var rootReference = FirebaseDatabase.getInstance().reference
+    private val userID: String = firebaseUser?.uid.toString()
 
     companion object {
         var tabLayout: TabLayout? = null
@@ -48,17 +59,11 @@ class MainActivity : AppCompatActivity() {
         val account: GoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this@MainActivity)
         currentUserName = account.displayName
         currentUserEmail = account.email
+        userDetailsToDatabase(currentUserName, currentUserEmail)
 
         tabLayout = findViewById(R.id.tabLayoutMain)
         viewPager = findViewById(R.id.viewPagerMain)
 
-        val extras: Bundle? = intent.extras
-        if (extras != null) {
-            subject = extras.getString("subject").toString()
-            section = extras.getString("section").toString()
-            teacherId = extras.getString("teacherId").toString()
-            codeToJoin = extras.getString("codeToJoin").toString()
-        }
         setViewPager()
 
         //click listener for floating button which will show popup menu on button click
@@ -109,13 +114,20 @@ class MainActivity : AppCompatActivity() {
             section = sectionEt.text.toString()
 
             if(subject.trim()!="" && section.trim()!="") {
-                val refresh = Intent(this, MainActivity::class.java)
-                refresh.putExtra("subject", subject)
-                refresh.putExtra("section", section)
-                refresh.putExtra("teacherId", "")
-                refresh.putExtra("codeToJoin", "")
-                startActivity(refresh)
-                this.finish()
+                //add class to database
+                val databaseRef = rootReference.child(NodeNames.TEACHER).child(userID).push()
+//                val classId = databaseRef.key.toString()
+
+                val hashMap: MutableMap<String, String> = HashMap()
+
+                hashMap[NodeNames.SUBJECT] = subject
+                hashMap[NodeNames.SECTION] = section
+                hashMap[NodeNames.CREATED_AT] = System.currentTimeMillis().toString()
+                hashMap[NodeNames.STUDENT_COUNT] = "0"
+
+
+                databaseRef.setValue(hashMap).addOnCompleteListener(
+                    OnCompleteListener<Void?> {})
             }
             else
                 Toast.makeText(this,"Enter Required Values", Toast.LENGTH_SHORT).show()
@@ -139,19 +151,49 @@ class MainActivity : AppCompatActivity() {
             codeToJoin = codeToJoinEt.text.toString()
 
             if(teacherId.trim()!="" && codeToJoin.trim()!="") {
-                val refresh = Intent(this, MainActivity::class.java)
-                refresh.putExtra("subject", "")
-                refresh.putExtra("section", "")
-                refresh.putExtra("teacherId", teacherId)
-                refresh.putExtra("codeToJoin", codeToJoin)
-                startActivity(refresh)
-                this.finish()
+                //add class to database
+                val databaseRef = rootReference.child(NodeNames.STUDENT).child(userID).child(codeToJoin)
+                databaseRef.child(NodeNames.TEACHERID).get().addOnCompleteListener {
+                    if(it.result.value == null){
+                        val hashMap: MutableMap<String, String> = HashMap()
+                        hashMap[NodeNames.TEACHERID] = teacherId
+
+                        databaseRef.setValue(hashMap).addOnCompleteListener {
+                            Toast.makeText(this, "Class successfully joined", Toast.LENGTH_SHORT).show()
+
+                            //update student count in teacher class
+                            val currentRef =
+                                rootReference.child(NodeNames.TEACHER).child(teacherId)
+                                    .child(codeToJoin)
+                            currentRef.child(NodeNames.STUDENT_COUNT).get().addOnCompleteListener {itr ->
+                                val curSnapshot = itr.result
+                                val studentCount = curSnapshot.value.toString()
+                                var curCount = studentCount.toInt()
+                                curCount++
+                                currentRef.child(NodeNames.STUDENT_COUNT).setValue(curCount.toString())
+                            }
+                        }
+                    }else{
+                        Toast.makeText(this, "Class already joined or wrong credentials", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
             else
                 Toast.makeText(this,"Enter Required Values", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    //set details of current user to database
+    private fun userDetailsToDatabase(currentUserName: String?, currentUserEmail: String?) {
+        if (userID != null) {
+            Log.i("userId", userID)
+            rootReference.child(NodeNames.USERS).child(userID).child(NodeNames.NAME).setValue(currentUserName).addOnCompleteListener(
+                OnCompleteListener<Void?> {})
+            rootReference.child(NodeNames.USERS).child(userID).child(NodeNames.EMAIL).setValue(currentUserEmail).addOnCompleteListener(
+                OnCompleteListener<Void?> {})
+        }
     }
 
     //this function will set the view pager according to the tab selection
@@ -180,26 +222,9 @@ class MainActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             return if(position==0) {
                 val fragment = TeacherFragment()
-
-                val bundle = Bundle()
-                bundle.putString("subject",subject)
-                bundle.putString("section",section)
-                Log.i("values", "$subject $section")
-                fragment.arguments = bundle
-                subject=""
-                section=""
-
                 fragment
             }else{
                 val fragment = StudentFragment()
-
-                val bundle = Bundle()
-                bundle.putString("teacherId", teacherId)
-                bundle.putString("codeToJoin", codeToJoin)
-                fragment.arguments = bundle
-                teacherId=""
-                codeToJoin=""
-
                 fragment
             }
         }

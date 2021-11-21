@@ -14,7 +14,12 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.classtask.NodeNames
 import com.example.classtask.teacher.TeacherClassModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class StudentFragment : Fragment() {
 
@@ -22,6 +27,10 @@ class StudentFragment : Fragment() {
     private var studentAdapter: StudentAdapter? = null
     private lateinit var emptyListTextView: TextView
     private lateinit var studentClassModelList: ArrayList<StudentClassModel>
+    private var firebaseAuth = FirebaseAuth.getInstance()
+    private var firebaseUser = firebaseAuth.currentUser
+    private var rootReference = FirebaseDatabase.getInstance().reference
+    private val userID: String = firebaseUser?.uid.toString()
 //    private val progressBar: View? = null
 
     override fun onCreateView(
@@ -48,25 +57,40 @@ class StudentFragment : Fragment() {
 
         emptyListTextView.visibility = View.VISIBLE
 
-        val bundle = arguments
-        val teacherIdValue = bundle!!.getString("teacherId")
-        val codeToJoinValue = bundle!!.getString("codeToJoin")
-        Log.i("entered","hurrah!")
+        val studentListRef = rootReference.child(NodeNames.STUDENT).child(userID)
+        studentListRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                studentClassModelList.clear()
+                studentAdapter!!.notifyDataSetChanged()
 
-        studentClassModelList.add(StudentClassModel("DSA","7th sem","ABCD"))
-        studentClassModelList.add(StudentClassModel("Algo","7th sem","efgh"))
+                for(snaps in snapshot.children) {
 
-        if(teacherIdValue!="" && codeToJoinValue!="") {
+                    val codeToJoin = snaps.key.toString()
 
-            studentClassModelList.add(
-                StudentClassModel(
-                    teacherIdValue.toString(),
-                    codeToJoinValue.toString(),
-                    ""
-                )
-            )
-        }
+                    val teacherId = snaps.child(NodeNames.TEACHERID).value.toString()
 
-        if (studentClassModelList.isNotEmpty()) emptyListTextView.visibility = View.GONE
+                    val teacherRef = rootReference.child(NodeNames.TEACHER).child(teacherId).child(codeToJoin)
+                    teacherRef.get().addOnCompleteListener {
+                        val classDetailsSnapShot = it.result
+                        val thisSection = classDetailsSnapShot.child(NodeNames.SECTION).value.toString()
+                        val thisSubject = classDetailsSnapShot.child(NodeNames.SUBJECT).value.toString()
+
+                        rootReference.child(NodeNames.USERS).child(teacherId).get().addOnCompleteListener{ userDetails ->
+                            val teacherName = userDetails.result.child(NodeNames.NAME).value.toString()
+
+                            val curElement = StudentClassModel(thisSubject, thisSection, teacherName,userID, codeToJoin, teacherId)
+                            studentClassModelList.add(curElement)
+
+                            if (studentClassModelList.isNotEmpty())
+                                emptyListTextView.visibility = View.GONE
+                            studentAdapter!!.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 }

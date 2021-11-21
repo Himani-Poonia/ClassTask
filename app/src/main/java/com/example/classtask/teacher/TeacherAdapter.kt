@@ -7,20 +7,30 @@ import android.view.View
 import com.example.classtask.R
 import android.content.Context
 import android.content.Intent
-import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import androidx.cardview.widget.CardView
 import com.example.classtask.MainActivity
+import com.example.classtask.NodeNames
 import com.example.classtask.classwork.AssignmentsActivity
+import com.example.classtask.student.StudentClassModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class TeacherAdapter(context: Context, teacherClassModelList: List<TeacherClassModel>):
     RecyclerView.Adapter<TeacherAdapter.TeacherViewHolder>() {
 
     private var context = context
     private var teacherClassModelList = teacherClassModelList
+    private var rootReference = FirebaseDatabase.getInstance().reference
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,7 +51,7 @@ class TeacherAdapter(context: Context, teacherClassModelList: List<TeacherClassM
             val intent = Intent(context, AssignmentsActivity::class.java)
             intent.putExtra("className",teacherClassModel.getTitle())
             intent.putExtra("isTeacher",true)
-            context?.startActivity(intent)
+            context.startActivity(intent)
         }
 
         holder.ivmenu.setOnClickListener {
@@ -49,11 +59,11 @@ class TeacherAdapter(context: Context, teacherClassModelList: List<TeacherClassM
             popupMenu.menuInflater.inflate(R.menu.menu_teacher, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener {item ->
                 if(item.itemId == R.id.sendInviteMenu)
-                    sendToGoogleMail()
+                    sendToGoogleMail(teacherClassModel.getUserId(), teacherClassModel.getUniqueId())
                 else if(item.itemId == R.id.editClassItem){
                     showCreateClassDialog(teacherClassModel.getTitle(), teacherClassModel.getSection(),position)
                 }else if(item.itemId == R.id. deleteItem){
-
+                    deleteClass(teacherClassModel.getUserId(), teacherClassModel.getUniqueId())
                 }
 
                 false
@@ -62,11 +72,11 @@ class TeacherAdapter(context: Context, teacherClassModelList: List<TeacherClassM
         }
     }
 
-    private fun sendToGoogleMail(){
+    private fun sendToGoogleMail(teacherId: String, codeToJoin: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_SUBJECT, "Class Invite details to ClassTask")
         intent.putExtra(Intent.EXTRA_TEXT, "Dear Students,\nJoin the Class on" +
-                " ClassTask using below details:\n\nTeacher ID: dlvsfknkvn\nCode To Join: vdfji847")
+                " ClassTask using below details:\n\nTeacher ID: $teacherId\nCode To Join: $codeToJoin")
         intent.type = "message/rfc822"
         intent.setPackage("com.google.android.gm")
         context.startActivity(Intent.createChooser(intent,"Send mail..."))
@@ -90,20 +100,31 @@ class TeacherAdapter(context: Context, teacherClassModelList: List<TeacherClassM
             val section = sectionEt.text.toString()
 
             if(subject.trim()!="" && section.trim()!="") {
-                teacherClassModelList[position].setTitle(subject)
-                teacherClassModelList[position].setSection(section) //update to database
-                val refresh = Intent(context, MainActivity::class.java)
-                refresh.putExtra("subject", "")
-                refresh.putExtra("section", "")
-                refresh.putExtra("teacherId", "")
-                refresh.putExtra("codeToJoin", "")
-                context.startActivity(refresh)   //remember to connect to DB and remove this refresh
+                val curClassId = teacherClassModelList[position].getUniqueId()
+                val userId = teacherClassModelList[position].getUserId()
+
+                rootReference.child(NodeNames.TEACHER).child(userId).child(curClassId).child(NodeNames.SUBJECT).setValue(subject)
+                rootReference.child(NodeNames.TEACHER).child(userId).child(curClassId).child(NodeNames.SECTION).setValue(section)
             }
             else
                 Toast.makeText(context,"Enter Required Values", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun deleteClass(userId: String, classId: String){
+        val teacherRef = rootReference.child(NodeNames.TEACHER).child(userId).child(classId)
+        teacherRef.removeValue().addOnCompleteListener {
+            Toast.makeText(context, "Class successfully deleted", Toast.LENGTH_SHORT).show()
+            rootReference.child(NodeNames.STUDENT).get().addOnCompleteListener { deleteStudentClass ->
+                val snapshot = deleteStudentClass.result
+                for (snaps in snapshot.children) {
+                    val studentId = snaps.key.toString()
+                    rootReference.child(NodeNames.STUDENT).child(studentId).child(classId).removeValue()
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {

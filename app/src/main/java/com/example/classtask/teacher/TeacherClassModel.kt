@@ -4,10 +4,14 @@ class TeacherClassModel(
     title: String,
     section: String,
     students: Int,
+    databaseId: String,
+    userId: String
 ){
     private var myTitle = title
     private var mySection = section
     private var myStudents = students
+    private var uniqueDBId = databaseId
+    private var teacherUserId = userId
 
     fun getTitle(): String {
         return myTitle
@@ -26,13 +30,31 @@ class TeacherClassModel(
     }
 
     fun getStudentCount(): String {
-        return if(myStudents>0)
+        return if(myStudents>1)
             "$myStudents Students"
+        else if(myStudents==1)
+            "$myStudents Student"
         else
             ""
     }
 
     fun setStudentCount(studentCount: Int) {
         myStudents = studentCount
+    }
+
+    fun getUniqueId(): String{
+        return uniqueDBId
+    }
+
+    fun setUniqueId(uniqueId: String){
+        uniqueDBId = uniqueId
+    }
+
+    fun getUserId(): String{
+        return teacherUserId
+    }
+
+    fun setUserId(thisUserId: String){
+        teacherUserId = thisUserId
     }
 }
