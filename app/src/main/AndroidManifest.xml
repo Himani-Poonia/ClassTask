@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClassTask">
         <activity
+            android:name=".classwork.assignment.submissions.TotalSubmissionsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".classwork.assignment.SubmissionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".classwork.assignment.NewAssignmentActivity"
+            android:exported="true" />
+        <activity
             android:name=".classwork.AssignmentsActivity"
             android:exported="true" />
         <activity

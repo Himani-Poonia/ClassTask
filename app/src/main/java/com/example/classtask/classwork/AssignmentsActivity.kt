@@ -28,6 +28,7 @@ class AssignmentsActivity : AppCompatActivity() {
         var tabLayout: TabLayout? = null
         var viewPager: ViewPager? = null
         var isTeacher = false
+        var className = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +36,8 @@ class AssignmentsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_assignments)
 
         val intent = intent
-        title = intent.getStringExtra("className")
+        className = intent.getStringExtra("className").toString()
+        title = className
         isTeacher = intent.getBooleanExtra("isTeacher",false)
 
         tabLayout = findViewById(R.id.tabLayoutMain)
@@ -93,19 +95,12 @@ class AssignmentsActivity : AppCompatActivity() {
 
                 val bundle = Bundle()
                 bundle.putBoolean("isTeacher", isTeacher)
+                bundle.putString("className",className)
                 fragment.arguments = bundle
 
                 fragment
             }else{
                 val fragment = PeopleFragment()
-
-//                val bundle = Bundle()
-//                bundle.putString("teacherId", teacherId)
-//                bundle.putString("codeToJoin", MainActivity.codeToJoin)
-//                fragment.arguments = bundle
-//                MainActivity.teacherId =""
-//                MainActivity.codeToJoin =""
-
                 fragment
             }
         }
