@@ -29,12 +29,17 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Assignments" />
+            android:icon="@drawable/ic_assign" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="People" />
+            android:icon="@drawable/ic_forum" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_people" />
 
     </com.google.android.material.tabs.TabLayout>
 

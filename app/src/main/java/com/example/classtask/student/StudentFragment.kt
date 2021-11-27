@@ -31,7 +31,7 @@ class StudentFragment : Fragment() {
     private var firebaseUser = firebaseAuth.currentUser
     private var rootReference = FirebaseDatabase.getInstance().reference
     private val userID: String = firebaseUser?.uid.toString()
-//    private val progressBar: View? = null
+    private lateinit var progressBar: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +46,7 @@ class StudentFragment : Fragment() {
 
         studentRecyclerView = view.findViewById(R.id.studentRecyclerView)
         emptyListTextView = view.findViewById(R.id.tvNoClassJoined)
-//        progressBar = view.findViewById(R.id.progressBar)
+        progressBar = view.findViewById(R.id.stProgressBar)
 
         studentRecyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -56,11 +56,13 @@ class StudentFragment : Fragment() {
         studentRecyclerView.adapter = studentAdapter
 
         emptyListTextView.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
 
         val studentListRef = rootReference.child(NodeNames.STUDENT).child(userID)
         studentListRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 studentClassModelList.clear()
+                progressBar.visibility = View.GONE
                 studentAdapter!!.notifyDataSetChanged()
 
                 for(snaps in snapshot.children) {
@@ -90,6 +92,7 @@ class StudentFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                progressBar.visibility = View.GONE
             }
         })
     }

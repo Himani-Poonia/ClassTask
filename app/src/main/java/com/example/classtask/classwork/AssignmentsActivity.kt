@@ -1,25 +1,17 @@
 package com.example.classtask.classwork
 
-import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.classtask.MainActivity
-import com.example.classtask.ProfileActivity
 import com.example.classtask.R
+import com.example.classtask.classwork.chats.ChatFragment
 import com.example.classtask.classwork.assignment.AssignmentFragment
 import com.example.classtask.classwork.people.PeopleFragment
-import com.example.classtask.student.StudentFragment
-import com.example.classtask.teacher.TeacherFragment
 import com.google.android.material.tabs.TabLayout
 
 class AssignmentsActivity : AppCompatActivity() {
@@ -29,37 +21,33 @@ class AssignmentsActivity : AppCompatActivity() {
         var viewPager: ViewPager? = null
         var isTeacher = false
         var className = ""
+        var classId = ""
+        var teacherId=""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assignments)
 
+        val actionBar = supportActionBar
+        if(actionBar!=null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeButtonEnabled(true) //back arrow on action bar
+            actionBar.elevation = 0F
+        }
+
         val intent = intent
         className = intent.getStringExtra("className").toString()
         title = className
         isTeacher = intent.getBooleanExtra("isTeacher",false)
+        classId = intent.getStringExtra("classId").toString()
+        teacherId = intent.getStringExtra("teacherId").toString()
 
         tabLayout = findViewById(R.id.tabLayoutMain)
         viewPager = findViewById(R.id.viewPagerMain)
 
         setViewPager()
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.main_menu, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (item.itemId == R.id.itemProfile) {
-//            val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-//            intent.putExtra("name",currentUserName)
-//            intent.putExtra("email",currentUserEmail)
-//            startActivity(intent)
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
     //this function will set the view pager according to the tab selection
     private fun setViewPager() {
@@ -96,13 +84,42 @@ class AssignmentsActivity : AppCompatActivity() {
                 val bundle = Bundle()
                 bundle.putBoolean("isTeacher", isTeacher)
                 bundle.putString("className",className)
+                bundle.putString("classId", classId)
+                bundle.putString("teacherId", teacherId)
                 fragment.arguments = bundle
 
                 fragment
-            }else{
+            }
+            else if(position==1){
+                val fragment = ChatFragment()
+
+                val bundle = Bundle()
+                bundle.putString("classId", classId)
+                bundle.putString("teacherId", teacherId)
+                fragment.arguments = bundle
+
+                fragment
+            }
+            else{
                 val fragment = PeopleFragment()
+
+                val bundle = Bundle()
+                bundle.putString("classId", classId)
+                bundle.putString("teacherId", teacherId)
+                fragment.arguments = bundle
+
                 fragment
             }
         }
+    }
+
+    //to handle back arrow
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> {
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         val credential: AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
         mAuth.signInWithCredential(credential).addOnCompleteListener {
             if(it.isSuccessful){
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                startActivity(Intent(this@LoginActivity, ChooseStatusActivity::class.java))
                 finish()
             }else{
                 Toast.makeText(this@LoginActivity, it.exception?.message, Toast.LENGTH_SHORT).show()
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
         val user: FirebaseUser? = mAuth.currentUser
 
         if(user!=null){
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, ChooseStatusActivity::class.java))
             finish()
         }
     }
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
         val user: FirebaseUser? = mAuth.currentUser
 
         if(user!=null){
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, ChooseStatusActivity::class.java))
             finish()
         }
     }

@@ -28,14 +28,14 @@
                 android:layout_marginTop="24dp"
                 android:text="Create Class"
                 android:textColor="#2E2D2D"
-                android:textSize="32dp" />
+                android:textSize="24dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -59,6 +59,7 @@
                             android:id="@+id/tvSubject"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="#F4F4F4"
                             android:hint="Subject" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -73,6 +74,7 @@
                             android:id="@+id/tvSection"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="#F4F4F4"
                             android:hint="Section" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,7 +92,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
-                    android:backgroundTint="#BF230BF4"
+                    android:backgroundTint="@color/color_primary"
                     android:text="Create"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

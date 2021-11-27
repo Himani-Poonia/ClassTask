@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".classwork.assignment.submissions.TotalSubmissionsActivity">
 
+    <include
+        android:id="@+id/listProgressBar"
+        layout="@layout/custom_progressbar"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/tvNoSubmission"
         android:layout_width="wrap_content"

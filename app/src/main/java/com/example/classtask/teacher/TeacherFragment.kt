@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +30,7 @@ class TeacherFragment : Fragment() {
     private var firebaseUser = firebaseAuth.currentUser
     private var rootReference = FirebaseDatabase.getInstance().reference
     private val userID: String = firebaseUser?.uid.toString()
-//    private val progressBar: View? = null
+    private lateinit var progressBar: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +46,7 @@ class TeacherFragment : Fragment() {
 
         teacherRecyclerView = view.findViewById(R.id.teacherRecyclerView)
         emptyListTextView = view.findViewById(R.id.tvNoClassCreated)
-//        progressBar = view.findViewById(R.id.progressBar)
+        progressBar = view.findViewById(R.id.trProgressBar)
 
         teacherRecyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -55,12 +56,15 @@ class TeacherFragment : Fragment() {
         teacherRecyclerView.adapter = teacherAdapter
 
         emptyListTextView.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
 
 
         val teacherListRef = rootReference.child(NodeNames.TEACHER).child(userID)
         teacherListRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 teacherClassModelList.clear()
+                progressBar.visibility = View.GONE
+                emptyListTextView.visibility = View.VISIBLE
                 teacherAdapter!!.notifyDataSetChanged()
 
                 for(snaps in snapshot.children) {
@@ -78,6 +82,7 @@ class TeacherFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                progressBar.visibility = View.GONE
             }
         })
     }

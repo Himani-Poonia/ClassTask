@@ -8,9 +8,17 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.21354166666666666" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21354166666666666" />
         <entry key="app/src/main/res/drawable/card_border.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/card_border_green.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/card_chat_border.xml" value="0.37135416666666665" />
         <entry key="app/src/main/res/drawable/float_add.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/ic_forum.xml" value="0.37135416666666665" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/ic_unread_forum.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/iv_border.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/received_message_background.xml" value="0.37135416666666665" />
+        <entry key="app/src/main/res/drawable/sent_message_background.xml" value="0.37135416666666665" />
         <entry key="app/src/main/res/layout/activity_assignments.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/activity_choose_status.xml" value="0.32563405797101447" />
         <entry key="app/src/main/res/layout/activity_create_class.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/activity_join_class.xml" value="0.33958333333333335" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
@@ -20,13 +28,17 @@
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/activity_submission.xml" value="0.3546195652173913" />
         <entry key="app/src/main/res/layout/activity_total_submissions.xml" value="0.3546195652173913" />
+        <entry key="app/src/main/res/layout/activity_web_view_pdf.xml" value="0.19739583333333333" />
+        <entry key="app/src/main/res/layout/choose_status.xml" value="0.32563405797101447" />
         <entry key="app/src/main/res/layout/class_student.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/layout/class_student_layout.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/class_teacher.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/layout/class_teacher_layout.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/custom_progressbar.xml" value="0.34057971014492755" />
         <entry key="app/src/main/res/layout/dialog_create_class.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/dialog_join_class.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/fragment_assignment.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.33061594202898553" />
         <entry key="app/src/main/res/layout/fragment_people.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/fragment_student.xml" value="0.33958333333333335" />
         <entry key="app/src/main/res/layout/fragment_teacher.xml" value="0.35520833333333335" />
@@ -35,6 +47,10 @@
         <entry key="app/src/main/res/layout/layout_class_teacher.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/layout_people.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/layout_submission.xml" value="0.3546195652173913" />
+        <entry key="app/src/main/res/layout/layout_tab.xml" value="0.19739583333333333" />
+        <entry key="app/src/main/res/layout/layout_tab_student.xml" value="0.32563405797101447" />
+        <entry key="app/src/main/res/layout/layout_tab_teacher.xml" value="0.2318840579710145" />
+        <entry key="app/src/main/res/layout/message_list_item.xml" value="0.33061594202898553" />
         <entry key="app/src/main/res/layout/splash_screen.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/menu/menu_assignment.xml" value="0.35520833333333335" />

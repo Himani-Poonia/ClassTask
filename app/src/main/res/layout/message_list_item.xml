@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/messageConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/sentLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/sent_message_background"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/senderTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/app_icon_background"
+            android:textColorLink="#4E80B8"
+            android:textSize="10sp"
+            tools:text="Sender" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/sent_message_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/sentMsgTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:paddingStart="12dp"
+                android:paddingEnd="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="@android:color/white"
+                android:textColorLink="#4E80B8"
+                app:layout_constraintBottom_toTopOf="@id/sentMsgTimeTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Hello Sir, how areYou?" />
+
+            <TextView
+                android:id="@+id/sentMsgTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="2dp"
+                android:paddingBottom="4dp"
+                android:textColor="#DDDDDD"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/clMsg"
+                app:layout_constraintEnd_toEndOf="@+id/clMsg"
+                tools:text="09:00" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/receivedLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="64dp"
+        android:background="@drawable/received_message_background"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sentLinearLayout"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/receiverTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:textColorLink="#4E80B8"
+            android:textSize="10sp"
+            tools:text="Receiver" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clRecMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/receivedMsgTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="#2E2E2E"
+                android:textColorLink="#4E80B8"
+                app:layout_constraintBottom_toTopOf="@id/receivedMsgTimeTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Hello Sir, how areYou?" />
+
+            <TextView
+                android:id="@+id/receivedMsgTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="2dp"
+                android:paddingBottom="4dp"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/clRecMsg"
+                app:layout_constraintEnd_toEndOf="@+id/clRecMsg"
+                tools:text="09:00" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

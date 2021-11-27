@@ -47,6 +47,8 @@ class StudentAdapter(context: Context?, studentClassModelList: List<StudentClass
             val intent = Intent(context,AssignmentsActivity::class.java)
             intent.putExtra("className",studentClassModel.getTitle())
             intent.putExtra("isTeacher",false)
+            intent.putExtra("classId",studentClassModel.getCodeToJoin())
+            intent.putExtra("teacherId", studentClassModel.getTeacherId())
             context?.startActivity(intent)
         }
 

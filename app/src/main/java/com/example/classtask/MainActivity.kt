@@ -2,36 +2,33 @@ package com.example.classtask
 
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.provider.Settings
 import android.view.Window
-import android.widget.Button
-import android.widget.PopupMenu
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.classtask.teacher.TeacherFragment
-import com.example.classtask.student.StudentFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import android.widget.EditText
-import android.widget.Toast
+import com.example.classtask.student.StudentFragment
 
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.tabs.TabLayout.GRAVITY_FILL
 
 import com.google.firebase.database.FirebaseDatabase
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,14 +39,15 @@ class MainActivity : AppCompatActivity() {
     private var firebaseUser = firebaseAuth.currentUser
     private var rootReference = FirebaseDatabase.getInstance().reference
     private val userID: String = firebaseUser?.uid.toString()
+    private var viewPager: ViewPager? = null
+    private var subject = ""
+    private var section = ""
+    private var teacherId = ""
+    private var codeToJoin = ""
 
     companion object {
         var tabLayout: TabLayout? = null
-        var viewPager: ViewPager? = null
-        var subject = ""
-        var section = ""
-        var teacherId = ""
-        var codeToJoin = ""
+        var isTeacher = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         currentUserEmail = account.email
         userDetailsToDatabase(currentUserName, currentUserEmail)
 
+        isTeacher = intent.getBooleanExtra("isTeacher", false)
+
         tabLayout = findViewById(R.id.tabLayoutMain)
         viewPager = findViewById(R.id.viewPagerMain)
 
@@ -69,18 +69,10 @@ class MainActivity : AppCompatActivity() {
         //click listener for floating button which will show popup menu on button click
         val floatingButton:FloatingActionButton = findViewById(R.id.floatingActionButton)
         floatingButton.setOnClickListener {
-            val popupMenu = PopupMenu(this@MainActivity, it)
-            popupMenu.menuInflater.inflate(R.menu.menu_popup, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener {item ->
-                if(item.itemId == R.id.item_create_class){
-                    showCreateClassDialog()
-                }else if(item.itemId == R.id.item_join_class){
-                    showJoinClassDialog()
-                }
-
-                false
-            }
-            popupMenu.show()
+            if(isTeacher)
+                showCreateClassDialog()
+            else
+                showJoinClassDialog()
         }
     }
 
@@ -94,6 +86,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ProfileActivity::class.java)
             intent.putExtra("name",currentUserName)
             intent.putExtra("email",currentUserEmail)
+            startActivity(intent)
+        } else if(item.itemId == R.id.itemSettings){
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.data = Uri.parse("package:$packageName")
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
@@ -127,7 +123,9 @@ class MainActivity : AppCompatActivity() {
 
 
                 databaseRef.setValue(hashMap).addOnCompleteListener(
-                    OnCompleteListener<Void?> {})
+                    OnCompleteListener<Void?> {
+                        Toast.makeText(this@MainActivity, "Class Successfully Created", Toast.LENGTH_SHORT).show()
+                    })
             }
             else
                 Toast.makeText(this,"Enter Required Values", Toast.LENGTH_SHORT).show()
@@ -198,6 +196,12 @@ class MainActivity : AppCompatActivity() {
 
     //this function will set the view pager according to the tab selection
     private fun setViewPager() {
+        if(isTeacher)
+            tabLayout?.newTab()?.setCustomView(R.layout.layout_tab_teacher)?.let { tabLayout!!.addTab(it) }
+        else
+            tabLayout?.newTab()?.setCustomView(R.layout.layout_tab_student)?.let { tabLayout!!.addTab(it) }
+
+        tabLayout?.tabGravity = GRAVITY_FILL
         val mainAdapter = Adapter(supportFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
         viewPager?.adapter = mainAdapter
 
@@ -220,13 +224,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItem(position: Int): Fragment {
-            return if(position==0) {
-                val fragment = TeacherFragment()
-                fragment
-            }else{
-                val fragment = StudentFragment()
-                fragment
-            }
+                return chooseFragment()
+        }
+
+        private fun chooseFragment(): Fragment{
+            return if(isTeacher)
+                TeacherFragment()
+            else
+                StudentFragment()
         }
     }
 }

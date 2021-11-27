@@ -31,9 +31,9 @@ class TeacherClassModel(
 
     fun getStudentCount(): String {
         return if(myStudents>1)
-            "$myStudents Students"
+            "$myStudents students"
         else if(myStudents==1)
-            "$myStudents Student"
+            "$myStudents student"
         else
             ""
     }

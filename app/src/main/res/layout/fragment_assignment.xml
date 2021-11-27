@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".classwork.assignment.AssignmentFragment">
 
+    <include
+        android:id="@+id/assignProgressBar"
+        layout="@layout/custom_progressbar"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -55,7 +60,7 @@
         android:contentDescription="ADD"
         android:focusable="true"
         android:src="@drawable/float_add"
-        app:backgroundTint="#E93471"
+        app:backgroundTint="@color/app_icon_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

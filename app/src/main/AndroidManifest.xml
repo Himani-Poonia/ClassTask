@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.classtask">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,10 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClassTask">
         <activity
+            android:name=".ChooseStatusActivity"
+            android:exported="true" />
+        <activity
             android:name=".classwork.assignment.submissions.TotalSubmissionsActivity"
             android:exported="true" />
         <activity
-            android:name=".classwork.assignment.SubmissionActivity"
+            android:name=".classwork.assignment.submissions.SubmissionActivity"
             android:exported="true" />
         <activity
             android:name=".classwork.assignment.NewAssignmentActivity"

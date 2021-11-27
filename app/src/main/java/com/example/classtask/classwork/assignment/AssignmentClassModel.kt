@@ -3,17 +3,21 @@ package com.example.classtask.classwork.assignment
 class AssignmentClassModel(
     title: String,
     time: String,
-    assignId: String,
     description: String,
     points: String,
-    className: String
+    className: String,
+    classId: String
 ) {
     private var myTitle = title
     private var myTime = time
-    private var myAssignId = assignId
     private var myDescription = description
     private var myPoints = points
     private var myClassName = className
+    private var classId = classId
+
+    fun getClassId(): String{
+        return classId
+    }
 
     fun getClassName(): String {
         return myClassName
@@ -41,14 +45,6 @@ class AssignmentClassModel(
 
     fun setDesc(desc: String) {
         myDescription = desc
-    }
-
-    fun getAssignId(): String {
-        return myAssignId
-    }
-
-    fun setAssignId(assignID: String) {
-        myAssignId = assignID
     }
 
     fun getPoints(): String {
