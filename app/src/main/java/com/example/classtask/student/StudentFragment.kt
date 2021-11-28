@@ -62,6 +62,7 @@ class StudentFragment : Fragment() {
         studentListRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 studentClassModelList.clear()
+                emptyListTextView.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
                 studentAdapter!!.notifyDataSetChanged()
 

@@ -34,10 +34,4 @@ class SplashActivity : AppCompatActivity() {
         super.onStart()
         splashImageView?.startAnimation(animation)
     }
-
-    override fun onResume() {
-        super.onResume()
-        startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-        finish()
-    }
 }

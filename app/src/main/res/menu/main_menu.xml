@@ -10,5 +10,6 @@
 
     <item
         android:id="@+id/itemSettings"
+        android:visible="false"
         android:title="Settings" />
 </menu>

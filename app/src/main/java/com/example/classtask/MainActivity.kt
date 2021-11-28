@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.provider.Settings
 import android.view.Window
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -44,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private var section = ""
     private var teacherId = ""
     private var codeToJoin = ""
+    private var photoUrl = ""
 
     companion object {
         var tabLayout: TabLayout? = null
@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity() {
         val account: GoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this@MainActivity)
         currentUserName = account.displayName
         currentUserEmail = account.email
+        photoUrl = account.photoUrl.toString()
+
         userDetailsToDatabase(currentUserName, currentUserEmail)
 
         isTeacher = intent.getBooleanExtra("isTeacher", false)
@@ -86,12 +88,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ProfileActivity::class.java)
             intent.putExtra("name",currentUserName)
             intent.putExtra("email",currentUserEmail)
-            startActivity(intent)
-        } else if(item.itemId == R.id.itemSettings){
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = Uri.parse("package:$packageName")
+            intent.putExtra("photoUrl", photoUrl)
             startActivity(intent)
         }
+
         return super.onOptionsItemSelected(item)
     }
 

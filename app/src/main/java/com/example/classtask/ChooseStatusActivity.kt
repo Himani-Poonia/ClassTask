@@ -10,6 +10,8 @@ class ChooseStatusActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_status)
 
+        supportActionBar?.hide()
+
         val clTeacher: ConstraintLayout = findViewById(R.id.clChooseTeacher)
         val clStudent: ConstraintLayout = findViewById(R.id.clChooseStudent)
 

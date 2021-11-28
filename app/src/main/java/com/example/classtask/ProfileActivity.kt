@@ -1,12 +1,15 @@
 package com.example.classtask
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.mikhaellopez.circularimageview.CircularImageView
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -30,6 +33,13 @@ class ProfileActivity : AppCompatActivity() {
         tvName.text = intent.getStringExtra("name")
         val tvEmail: TextView = findViewById(R.id.tvProfileEmail)
         tvEmail.text = intent.getStringExtra("email")
+        val profileImageView: CircularImageView = findViewById(R.id.ivProfile)
+
+        Glide.with(this)
+            .load(Uri.parse(intent.getStringExtra("photoUrl")))
+            .placeholder(R.drawable.profile)
+            .error(R.drawable.profile)
+            .into(profileImageView)
 
         val logoutButton: Button = findViewById(R.id.logoutButton)
         logoutButton.setOnClickListener {
