@@ -8,6 +8,9 @@ The Classtask app also includes a discussion thread for each class to discuss or
 3. App provides an assignment submission tool where teachers can give assignments to enrolled students and students can upload solutions in pdf form to each assignment.
 4. App also includes discussion thread where teachers and students can communicate in their particular classes.
 
+## Demo Video: 
+https://www.youtube.com/watch?v=gcsvY0Pcfdk
+
 ## Tech Stack:
 1. Android Studio is used to create native android application
 2. Firebase is used for:
